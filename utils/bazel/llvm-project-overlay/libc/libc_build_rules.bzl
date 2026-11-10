@@ -410,7 +410,7 @@ def libc_math_function(
         hdrs = ["src/math/" + name + ".h"],
         deps = [
             ":__support_common",
-            ":__support_macros_config",
+            "//libc/src/__support/macros:config",
             "//libc/src/__support/macros/properties:types",
         ] + OLD_FPUTIL_DEPS + additional_deps,
     )
