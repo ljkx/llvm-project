@@ -327,8 +327,8 @@ libc_support_library(
     name = "__support_macros_config",
     hdrs = ["src/__support/macros/config.h"],
     deps = [
-        "__support_macros_properties_architectures",
-        "__support_macros_properties_compiler",
+        "//libc/src/__support/macros/properties:architectures",
+        "//libc/src/__support/macros/properties:compiler",
     ],
 )
 
@@ -336,7 +336,7 @@ libc_support_library(
     name = "config_app_h",
     hdrs = ["config/app.h"],
     deps = [
-        ":__support_macros_properties_architectures",
+        "//libc/src/__support/macros/properties:architectures",
     ] + select({
         "@platforms//os:linux": [":config_linux_app_h"],
         "//conditions:default": [],
@@ -353,8 +353,8 @@ libc_support_library(
     deps = [
         ":__support_macros_attributes",
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
         ":hdr_stdint_proxy",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -1741,62 +1741,11 @@ libc_support_library(
 ############################### Support libraries ##############################
 
 libc_support_library(
-    name = "__support_macros_properties_architectures",
-    hdrs = ["src/__support/macros/properties/architectures.h"],
-)
-
-libc_support_library(
-    name = "__support_macros_properties_compiler",
-    hdrs = ["src/__support/macros/properties/compiler.h"],
-)
-
-libc_support_library(
-    name = "__support_macros_properties_os",
-    hdrs = ["src/__support/macros/properties/os.h"],
-)
-
-libc_support_library(
-    name = "__support_macros_properties_complex_types",
-    hdrs = ["src/__support/macros/properties/complex_types.h"],
-    deps = [
-        ":__support_macros_properties_types",
-        ":hdr_stdint_proxy",
-        ":llvm_libc_types_cfloat128",
-        ":llvm_libc_types_cfloat16",
-    ],
-)
-
-libc_support_library(
-    name = "__support_macros_properties_types",
-    hdrs = ["src/__support/macros/properties/types.h"],
-    deps = [
-        ":__support_macros_config",
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_compiler",
-        ":__support_macros_properties_cpu_features",
-        ":__support_macros_properties_os",
-        ":hdr_float_macros",
-        ":hdr_stdint_proxy",
-        ":llvm_libc_macros_float16_macros",
-        ":llvm_libc_types_float128",
-    ],
-)
-
-libc_support_library(
-    name = "__support_macros_properties_cpu_features",
-    hdrs = ["src/__support/macros/properties/cpu_features.h"],
-    deps = [
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_compiler",
-    ],
-)
-
-libc_support_library(
     name = "__support_macros_attributes",
     hdrs = ["src/__support/macros/attributes.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -1811,7 +1760,7 @@ libc_support_library(
     deps = [
         ":__support_macros_attributes",
         ":__support_macros_config",
-        ":__support_macros_properties_compiler",
+        "//libc/src/__support/macros/properties:compiler",
     ],
 )
 
@@ -1842,11 +1791,11 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_hardening",
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_compiler",
-        ":__support_macros_properties_os",
         ":hdr_stdint_proxy",
         "//libc/src/__support/CPP:bit",
+        "//libc/src/__support/macros/properties:architectures",
+        "//libc/src/__support/macros/properties:compiler",
+        "//libc/src/__support/macros/properties:os",
     ],
 )
 
@@ -1959,8 +1908,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_compiler",
-        ":__support_macros_properties_types",
         ":__support_math_extras",
         ":__support_number_pair",
         ":hdr_stdint_proxy",
@@ -1969,6 +1916,8 @@ libc_support_library(
         "//libc/src/__support/CPP:limits",
         "//libc/src/__support/CPP:optional",
         "//libc/src/__support/CPP:type_traits",
+        "//libc/src/__support/macros/properties:compiler",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -2016,7 +1965,7 @@ libc_support_library(
     deps = [
         ":__support_big_int",
         ":__support_macros_attributes",
-        ":__support_macros_properties_types",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -2083,7 +2032,7 @@ libc_support_library(
         ":__support_macros_hardening",
         ":__support_macros_macro_utils",
         ":__support_macros_optimization",
-        ":__support_macros_properties_os",
+        "//libc/src/__support/macros/properties:os",
     ] + select({
         ":full_build": [
             ":__support_integer_to_string",
@@ -2154,8 +2103,8 @@ libc_support_library(
     hdrs = ["src/__support/complex_type.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
-        ":__support_macros_properties_types",
+        "//libc/src/__support/macros/properties:complex_types",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -2175,11 +2124,11 @@ libc_support_library(
     deps = [
         ":__support_common",
         ":__support_macros_config",
-        ":__support_macros_properties_os",
         ":func_aligned_alloc",
         ":func_malloc",
         "//libc/src/__support/CPP:new",
         "//libc/src/__support/CPP:type_traits",
+        "//libc/src/__support/macros/properties:os",
     ],
 )
 
@@ -3179,11 +3128,11 @@ libc_support_library(
     hdrs = ["src/__support/printf_core/core_structs.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_types",
         ":__support_printf_core_printf_config",
         "//libc/src/__support/CPP:string_view",
         "//libc/src/__support/CPP:type_traits",
         "//libc/src/__support/FPUtil:fp_bits",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -3196,7 +3145,6 @@ libc_support_library(
         ":__support_ctype_utils",
         ":__support_libc_errno",
         ":__support_macros_config",
-        ":__support_macros_properties_types",
         ":__support_printf_core_printf_config",
         ":__support_printf_core_printf_core_structs",
         ":__support_str_to_integer",
@@ -3210,6 +3158,7 @@ libc_support_library(
         "//libc/src/__support/CPP:type_traits",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/fixed_point",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -3289,10 +3238,10 @@ libc_support_library(
     }),
     deps = [
         ":__support_error_or",
-        ":__support_macros_properties_architectures",
         ":__support_printf_core_printf_core_structs",
         ":hdr_errno_macros",
         "//libc/src/__support/CPP:type_traits",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -3427,9 +3376,9 @@ libc_support_library(
         ":__support_error_or",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_architectures",
         ":__support_macros_sanitizer",
         "//libc/src/__support/CPP:bit",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -3583,9 +3532,9 @@ libc_support_library(
         ":__support_error_or",
         ":__support_libc_assert",
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
         ":hdr_stdint_proxy",
         ":types_pid_t",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -4123,7 +4072,6 @@ libc_support_library(
     deps = [
         ":__support_common",
         ":__support_macros_attributes",
-        ":__support_macros_properties_architectures",
         ":__support_osutil_linux_auxv",
         ":__support_threads_callonce",
         ":__support_threads_linux_futex_word_type",
@@ -4138,6 +4086,7 @@ libc_support_library(
         "//libc/src/__support/CPP:array",
         "//libc/src/__support/CPP:optional",
         "//libc/src/__support/CPP:string_view",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -4152,10 +4101,10 @@ libc_support_library(
     deps = [
         ":__support_common",
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
         ":__support_osutil_syscall",
         ":string_utils",
         "//libc/src/__support/CPP:string_view",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -4380,12 +4329,12 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_attributes",
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
         ":__support_threads_cleanup_stack",
         ":hdr_stdint_proxy",
         ":types_size_t",
         ":types_struct___pthread_cleanup_frame",
         "//libc/src/__support/CPP:atomic",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -4546,11 +4495,11 @@ libc_support_library(
     deps = [
         ":__support_macros_attributes",
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_os",
         ":__support_threads_thread_attributes",
         ":hdr_offsetof_macros",
         ":hdr_stdint_proxy",
+        "//libc/src/__support/macros/properties:architectures",
+        "//libc/src/__support/macros/properties:os",
     ],
 )
 
@@ -4566,7 +4515,6 @@ libc_support_library(
         ":__support_error_or",
         ":__support_macros_attributes",
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
         ":__support_threads_tcb",
         ":__support_threads_thread_attributes",
         ":hdr_stdint_proxy",
@@ -4575,6 +4523,7 @@ libc_support_library(
         "//libc/src/__support/CPP:optional",
         "//libc/src/__support/CPP:string_view",
         "//libc/src/__support/CPP:stringstream",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -4816,7 +4765,6 @@ libc_support_library(
     deps = [
         ":__support_common",
         ":__support_error_or",
-        ":__support_macros_properties_types",
         ":__support_math_extras",
         ":__support_wchar_mbstate",
         ":hdr_errno_macros",
@@ -4825,6 +4773,7 @@ libc_support_library(
         ":types_size_t",
         "//libc/src/__support/CPP:bit",
         "//libc/src/__support/CPP:type_traits",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -4907,10 +4856,6 @@ cc_library(
         ":__support_macros_config",
         ":__support_macros_hardening",
         ":__support_macros_optimization",
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_compiler",
-        ":__support_macros_properties_cpu_features",
-        ":__support_macros_properties_types",
         ":__support_math_extras",
         ":__support_number_pair",
         ":__support_range_reduction",
@@ -4956,6 +4901,10 @@ cc_library(
         "//libc/src/__support/FPUtil:rounding_mode",
         "//libc/src/__support/FPUtil:sqrt",
         "//libc/src/__support/FPUtil:triple_double",
+        "//libc/src/__support/macros/properties:architectures",
+        "//libc/src/__support/macros/properties:compiler",
+        "//libc/src/__support/macros/properties:cpu_features",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -5522,8 +5471,6 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
-        ":__support_macros_properties_types",
         ":__support_math_asin_utils",
         "//libc/src/__support/FPUtil:double_double",
         "//libc/src/__support/FPUtil:dyadic_float",
@@ -5532,6 +5479,8 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:sqrt",
+        "//libc/src/__support/macros/properties:cpu_features",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -5678,7 +5627,6 @@ libc_support_library(
     hdrs = ["src/__support/math/acospif16.h"],
     deps = [
         ":__support_macros_optimization",
-        ":__support_macros_properties_types",
         ":__support_math_asin_utils",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
@@ -5687,6 +5635,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:sqrt",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -5866,7 +5815,6 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_asin_utils",
         "//libc/src/__support/FPUtil:double_double",
         "//libc/src/__support/FPUtil:dyadic_float",
@@ -5875,6 +5823,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:sqrt",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -5918,7 +5867,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_asin_utils",
         ":__support_sign",
         ":hdr_errno_macros",
@@ -5931,6 +5879,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:rounding_mode",
         "//libc/src/__support/FPUtil:sqrt",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -6002,7 +5951,6 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_asin_utils",
         ":__support_math_atan_utils",
         "//libc/src/__support/FPUtil:double_double",
@@ -6011,6 +5959,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -6115,13 +6064,13 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_asin_utils",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:sqrt",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -6220,9 +6169,9 @@ libc_support_library(
     hdrs = ["src/__support/math/bf16addf128.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_types",
         "//libc/src/__support/FPUtil:basic_operations",
         "//libc/src/__support/FPUtil:bfloat16",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -6544,10 +6493,10 @@ libc_support_library(
     hdrs = ["src/__support/math/ceilf16.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_cpu_features",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8287,10 +8236,10 @@ libc_support_library(
     hdrs = ["src/__support/math/rintf16.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_cpu_features",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8310,10 +8259,10 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_compiler",
-        ":__support_macros_properties_cpu_features",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
+        "//libc/src/__support/macros/properties:architectures",
+        "//libc/src/__support/macros/properties:compiler",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8370,10 +8319,10 @@ libc_support_library(
     hdrs = ["src/__support/math/roundevenf16.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_cpu_features",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8393,10 +8342,10 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_compiler",
-        ":__support_macros_properties_cpu_features",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
+        "//libc/src/__support/macros/properties:architectures",
+        "//libc/src/__support/macros/properties:compiler",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8415,10 +8364,10 @@ libc_support_library(
     hdrs = ["src/__support/math/roundf16.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_cpu_features",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8617,7 +8566,6 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_range_reduction_double",
         ":__support_sincos_eval",
         ":hdr_errno_macros",
@@ -8627,6 +8575,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8641,12 +8590,12 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_sincosf_utils",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8723,7 +8672,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         ":__support_sincosf_utils",
         "//libc/src/__support/FPUtil:fenv_impl",
@@ -8733,6 +8681,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8860,7 +8809,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp10f16_utils",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
@@ -8870,6 +8818,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -8959,10 +8908,10 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_types",
         ":hdr_fenv_macros",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -9003,7 +8952,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_check_exp_exceptions",
         ":__support_math_exp2f_float_utils",
         ":__support_math_expf_float_utils",
@@ -9012,6 +8960,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -9049,10 +8998,10 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_expf_double_eval",
         ":__support_math_expf_float_eval",
         ":__support_math_expf_integer_eval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -9061,11 +9010,11 @@ libc_support_library(
     hdrs = ["src/__support/math/expf16_utils.h"],
     deps = [
         ":__support_macros_attributes",
-        ":__support_macros_properties_types",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/CPP:array",
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -9263,10 +9212,10 @@ libc_support_library(
     hdrs = ["src/__support/math/fabsf16.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_compiler",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:basic_operations",
+        "//libc/src/__support/macros/properties:architectures",
+        "//libc/src/__support/macros/properties:compiler",
     ],
 )
 
@@ -9591,10 +9540,10 @@ libc_support_library(
     hdrs = ["src/__support/math/floorf16.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_cpu_features",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -9875,9 +9824,9 @@ libc_support_library(
     deps = [
         ":__support_common",
         ":__support_macros_config",
-        ":__support_macros_properties_types",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:manipulation_functions",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -10022,9 +9971,9 @@ libc_support_library(
     hdrs = ["src/__support/math/nextdownf128.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_types",
         ":llvm_libc_types_float128",
         "//libc/src/__support/FPUtil:manipulation_functions",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -10178,9 +10127,9 @@ libc_support_library(
     deps = [
         ":__support_common",
         ":__support_macros_config",
-        ":__support_macros_properties_types",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:manipulation_functions",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -10253,7 +10202,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_types",
         ":__support_math_gamma_util",
         ":hdr_errno_macros",
         ":hdr_fenv_macros",
@@ -10267,6 +10215,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -10289,7 +10238,6 @@ libc_support_library(
         ":__support_integer_literals",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         ":__support_math_log_range_reduction",
         "//libc/src/__support/FPUtil:double_double",
@@ -10299,6 +10247,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10320,7 +10269,6 @@ libc_support_library(
         ":__support_integer_literals",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         ":__support_math_log_range_reduction",
         "//libc/src/__support/FPUtil:double_double",
@@ -10330,6 +10278,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10341,7 +10290,6 @@ libc_support_library(
         ":__support_integer_literals",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         "//libc/src/__support/FPUtil:double_double",
         "//libc/src/__support/FPUtil:dyadic_float",
@@ -10350,6 +10298,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10360,12 +10309,12 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_acoshf_utils",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10388,7 +10337,6 @@ libc_support_library(
         ":__support_integer_literals",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         ":__support_math_log_range_reduction",
         "//libc/src/__support/FPUtil:double_double",
@@ -10398,6 +10346,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10418,7 +10367,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_expxf16_utils",
         ":hdr_errno_macros",
         ":hdr_fenv_macros",
@@ -10429,6 +10377,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10457,7 +10406,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp10_float16_constants",
         ":__support_math_expxf16_utils",
         ":hdr_errno_macros",
@@ -10469,6 +10417,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10480,13 +10429,13 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10508,7 +10457,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_expxf16_utils",
         ":hdr_errno_macros",
         ":hdr_fenv_macros",
@@ -10519,6 +10467,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10529,7 +10478,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_expxf16_utils",
         ":hdr_errno_macros",
         ":hdr_fenv_macros",
@@ -10540,6 +10488,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10550,12 +10499,12 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10620,13 +10569,13 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10659,7 +10608,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         ":__support_math_exp10",
         ":__support_math_exp2",
@@ -10680,6 +10628,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:sqrt",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10716,7 +10665,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp2_accurate_128",
         ":hdr_errno_macros",
         "//libc/src/__support/CPP:bit",
@@ -10727,6 +10675,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:fp_bitwise",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10737,7 +10686,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp10f",
         ":__support_math_exp2f",
         ":hdr_errno_macros",
@@ -10752,6 +10700,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:sqrt",
         "//libc/src/__support/FPUtil:triple_double",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10762,7 +10711,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         ":__support_math_exp_constants",
         ":__support_math_powf_utils",
@@ -10774,6 +10722,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10784,7 +10733,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp2f_float_utils",
         ":__support_math_powf_utils",
         "//libc/src/__support/CPP:bit",
@@ -10794,6 +10742,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10804,9 +10753,9 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_powf_double_eval",
         ":__support_math_powf_float_eval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10835,7 +10784,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp_double_utils",
         ":__support_math_exp_utils",
         "//libc/src/__support/CPP:bit",
@@ -10843,6 +10791,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:fp_bitwise",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10865,7 +10814,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp_double_utils",
         ":__support_math_exp_utils",
         "//libc/src/__support/CPP:bit",
@@ -10873,6 +10821,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:fp_bitwise",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10894,13 +10843,13 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp10f_utils",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10926,11 +10875,11 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_types",
         ":__support_math_exp2f_integer_utils",
         ":hdr_fenv_macros",
         "//libc/src/__support/CPP:bit",
         "//libc/src/__support/FPUtil:fp_bits",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -10952,10 +10901,10 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp2f_double_eval",
         ":__support_math_exp2f_float_eval",
         ":__support_math_exp2f_integer_eval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -10987,7 +10936,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         ":__support_math_exp10f_utils",
         ":hdr_errno_macros",
@@ -10999,6 +10947,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11008,7 +10957,6 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         ":__support_math_expxf16_utils",
         ":llvm_libc_macros_float16_macros",
@@ -11021,6 +10969,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11032,7 +10981,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp_double_utils",
         ":__support_math_exp_utils",
         "//libc/src/__support/CPP:bit",
@@ -11040,6 +10988,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:fp_bitwise",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11093,13 +11042,13 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp2f_float_utils",
         "//libc/src/__support/FPUtil:double_double",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11110,9 +11059,9 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp10f_double_eval",
         ":__support_math_exp10f_float_eval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11143,13 +11092,13 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp10f16_utils",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11179,7 +11128,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_common_constants",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fp_bits",
@@ -11187,6 +11135,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11197,7 +11146,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_expxf16_utils",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
@@ -11208,6 +11156,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11263,7 +11212,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_expxf16_utils",
         ":hdr_errno_macros",
         ":hdr_fenv_macros",
@@ -11274,6 +11222,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11284,11 +11233,11 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         "//libc/src/__support/FPUtil:bfloat16",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11336,7 +11285,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_range_reduction_double",
         ":__support_sincos_eval",
         ":hdr_errno_macros",
@@ -11347,6 +11295,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11374,7 +11323,6 @@ libc_support_library(
     deps = [
         ":__support_macros_attributes",
         ":__support_macros_config",
-        ":__support_macros_properties_cpu_features",
         ":__support_range_reduction",
         "//libc/src/__support/FPUtil:double_double",
         "//libc/src/__support/FPUtil:fenv_impl",
@@ -11382,6 +11330,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11392,7 +11341,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_range_reduction",
         ":__support_sincosf_utils",
         "//libc/src/__support/FPUtil:fenv_impl",
@@ -11401,6 +11349,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11421,7 +11370,6 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_range_reduction_double",
         ":__support_sincos_eval",
         ":hdr_errno_macros",
@@ -11430,6 +11378,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11462,7 +11411,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_range_reduction",
         ":__support_sincosf_utils",
         "//libc/src/__support/FPUtil:basic_operations",
@@ -11472,6 +11420,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11631,13 +11580,13 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_types",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:sqrt",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -11666,7 +11615,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp_utils",
         ":__support_math_sinhcosh_accurate_128",
         "//libc/src/__support/CPP:bit",
@@ -11674,6 +11622,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:fp_bitwise",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11684,7 +11633,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_sinhcosh_utils",
         ":hdr_errno_macros",
         "//libc/src/__support/CPP:bit",
@@ -11693,6 +11641,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:fp_bitwise",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11780,7 +11729,6 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_range_reduction_double",
         ":__support_sincos_eval",
         ":hdr_errno_macros",
@@ -11792,6 +11740,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:polyeval",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11800,7 +11749,6 @@ libc_support_library(
     hdrs = ["src/__support/math/tanbf16.h"],
     deps = [
         ":__support_macros_optimization",
-        ":__support_macros_properties_types",
         ":__support_sincosf_utils",
         ":hdr_errno_macros",
         ":hdr_fenv_macros",
@@ -11809,6 +11757,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -11823,7 +11772,6 @@ libc_support_library(
         ":__support_common",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_range_reduction",
         ":__support_sincosf_utils",
         "//libc/src/__support/FPUtil:except_value_utils",
@@ -11833,6 +11781,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -11841,7 +11790,6 @@ libc_support_library(
     hdrs = ["src/__support/math/tanf16.h"],
     deps = [
         ":__support_macros_optimization",
-        ":__support_macros_properties_types",
         ":__support_math_sincosf16_utils",
         ":hdr_errno_macros",
         ":hdr_fenv_macros",
@@ -11851,6 +11799,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -12049,10 +11998,10 @@ libc_support_library(
     hdrs = ["src/__support/math/truncf16.h"],
     deps = [
         ":__support_macros_config",
-        ":__support_macros_properties_cpu_features",
         ":llvm_libc_macros_float16_macros",
         "//libc/src/__support/FPUtil:cast",
         "//libc/src/__support/FPUtil:nearest_integer_operations",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -12204,7 +12153,6 @@ libc_support_library(
         ":__support_macros_attributes",
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp_utils",
         ":__support_math_tanh_accurate_128",
         ":hdr_errno_macros",
@@ -12216,6 +12164,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:fp_bitwise",
         "//libc/src/__support/FPUtil:multiply_add",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -12236,13 +12185,13 @@ libc_support_library(
     deps = [
         ":__support_macros_config",
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
         ":__support_math_exp10f_utils",
         "//libc/src/__support/FPUtil:except_value_utils",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:multiply_add",
         "//libc/src/__support/FPUtil:nearest_integer",
         "//libc/src/__support/FPUtil:polyeval",
+        "//libc/src/__support/macros/properties:cpu_features",
     ],
 )
 
@@ -12359,9 +12308,9 @@ libc_function(
         ":__support_common",
         ":__support_complex_type",
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
-        ":__support_macros_properties_types",
         "//libc/src/__support/CPP:bit",
+        "//libc/src/__support/macros/properties:complex_types",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -12373,9 +12322,9 @@ libc_function(
         ":__support_common",
         ":__support_complex_type",
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
-        ":__support_macros_properties_types",
         "//libc/src/__support/CPP:bit",
+        "//libc/src/__support/macros/properties:complex_types",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -12421,7 +12370,7 @@ libc_function(
         ":__support_common",
         ":__support_complex_basic_ops",
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
+        "//libc/src/__support/macros/properties:complex_types",
     ],
 )
 
@@ -12433,8 +12382,8 @@ libc_function(
         ":__support_common",
         ":__support_complex_basic_ops",
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
         "//libc/src/__support/CPP:bit",
+        "//libc/src/__support/macros/properties:complex_types",
     ],
 )
 
@@ -12479,7 +12428,7 @@ libc_function(
         ":__support_common",
         ":__support_complex_basic_ops",
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
+        "//libc/src/__support/macros/properties:complex_types",
     ],
 )
 
@@ -12491,7 +12440,7 @@ libc_function(
         ":__support_common",
         ":__support_complex_basic_ops",
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
+        "//libc/src/__support/macros/properties:complex_types",
     ],
 )
 
@@ -12538,9 +12487,9 @@ libc_function(
         ":__support_common",
         ":__support_complex_type",
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
-        ":__support_macros_properties_types",
         "//libc/src/__support/CPP:bit",
+        "//libc/src/__support/macros/properties:complex_types",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -12552,9 +12501,9 @@ libc_function(
         ":__support_common",
         ":__support_complex_type",
         ":__support_macros_config",
-        ":__support_macros_properties_complex_types",
-        ":__support_macros_properties_types",
         "//libc/src/__support/CPP:bit",
+        "//libc/src/__support/macros/properties:complex_types",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -13273,7 +13222,7 @@ libc_math_function(
     name = "cos",
     additional_deps = [
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
+        "//libc/src/__support/macros/properties:cpu_features",
         ":__support_math_cos",
         ":__support_math_cos_integer_eval",
     ],
@@ -15834,7 +15783,7 @@ libc_math_function(
     name = "sin",
     additional_deps = [
         ":__support_macros_optimization",
-        ":__support_macros_properties_cpu_features",
+        "//libc/src/__support/macros/properties:cpu_features",
         ":__support_math_sin",
         ":__support_math_sin_integer_eval",
     ],
@@ -16520,7 +16469,7 @@ libc_support_library(
     name = "stdlib_abort_utils",
     hdrs = ["src/stdlib/abort_utils.h"],
     deps = [
-        ":__support_macros_properties_architectures",
+        "//libc/src/__support/macros/properties:architectures",
     ] + select({
         "@platforms//os:linux": [
             ":stdlib_linux_abort_utils",
@@ -16916,16 +16865,16 @@ libc_support_library(
         ":__support_macros_config",
         ":__support_macros_is_defined",
         ":__support_macros_optimization",
-        ":__support_macros_properties_architectures",
-        ":__support_macros_properties_compiler",
-        ":__support_macros_properties_cpu_features",
-        ":__support_macros_properties_types",
         ":hdr_stdint_proxy",
         "//libc/src/__support/CPP:array",
         "//libc/src/__support/CPP:bit",
         "//libc/src/__support/CPP:cstddef",
         "//libc/src/__support/CPP:simd",
         "//libc/src/__support/CPP:type_traits",
+        "//libc/src/__support/macros/properties:architectures",
+        "//libc/src/__support/macros/properties:compiler",
+        "//libc/src/__support/macros/properties:cpu_features",
+        "//libc/src/__support/macros/properties:types",
     ],
 )
 
@@ -18937,11 +18886,11 @@ libc_support_library(
         ":__support_arg_list",
         ":__support_macros_attributes",
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
         ":scanf_main",
         ":scanf_reader",
         ":types_FILE",
         "//libc/src/__support/File:file",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -19297,10 +19246,10 @@ libc_function(
         ":__support_error_or",
         ":__support_libc_errno",
         ":__support_macros_config",
-        ":__support_macros_properties_architectures",
         ":__support_osutil_syscall",
         ":errno",
         ":pkey_common",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
@@ -19349,9 +19298,9 @@ libc_support_library(
     deps = [
         ":__support_common",
         ":__support_error_or",
-        ":__support_macros_properties_architectures",
         ":hdr_errno_macros",
         ":hdr_stdint_proxy",
+        "//libc/src/__support/macros/properties:architectures",
     ],
 )
 
