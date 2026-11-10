@@ -98,7 +98,6 @@ libc_support_library(
         "//libc:__support_float_to_string",
         "//libc:__support_integer_to_string",
         "//libc:__support_libc_assert",
-        "//libc:__support_stringutil",
         "//libc:__support_uint128",
         "//libc:__support_wchar_mbstate",
         "//libc:__support_wchar_string_converter",
@@ -119,6 +118,7 @@ libc_support_library(
         "//libc/src/__support/FPUtil:fenv_impl",
         "//libc/src/__support/FPUtil:fp_bits",
         "//libc/src/__support/FPUtil:rounding_mode",
+        "//libc/src/__support/StringUtil:stringutil",
         "//libc/src/__support/macros:config",
     ],
 )
