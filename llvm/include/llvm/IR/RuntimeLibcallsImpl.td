@@ -159,6 +159,7 @@ class MemoryEffects<ModRefInfo mr = ModRef> {
 
 def UnknownMemory : MemoryEffects;
 def NoMemory : MemoryEffects<NoModRef>;
+def ArgMemOnly : MemoryEffects<NoModRef> { let ArgMem = ModRef; }
 def ArgMemWriteOnly : MemoryEffects<NoModRef> { let ArgMem = Mod; }
 def ErrnoMemWriteOnly : MemoryEffects<NoModRef> { let ErrnoMem = Mod; }
 
