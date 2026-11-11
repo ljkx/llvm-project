@@ -411,6 +411,11 @@ LLVM_ABI void getMetadataToPropagate(
 /// metadata for M equal to the intersection value.
 ///
 /// This function always sets a (possibly null) value for each K in Kinds.
+///
+/// Also preserves identical !mem.cache_hint metadata when all sources and the
+/// destination are supported reads (loads or masked loads/gathers) or writes
+/// (stores or masked stores/scatters), with the same pointer operand position.
+/// Cache hints are dropped for missing/conflicting hints or other operations.
 LLVM_ABI Instruction *propagateMetadata(Instruction *I, ArrayRef<Value *> VL);
 
 /// Create a mask that filters the members of an interleave group where there

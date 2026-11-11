@@ -23,6 +23,8 @@
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/IntrinsicInst.h"
+#include "llvm/IR/Metadata.h"
 #include "llvm/IR/MemoryModelRelaxationAnnotations.h"
 #include "llvm/IR/PatternMatch.h"
 #include "llvm/IR/Value.h"
@@ -1119,10 +1121,61 @@ void llvm::getMetadataToPropagate(
   }
 }
 
+/// Get the index of the pointer operand for a vector instruction that may
+/// carry a cache hint.
+static std::optional<unsigned>
+getPointerOperandIndex(const Instruction *I) {
+  if (isa<LoadInst>(I))
+    return LoadInst::getPointerOperandIndex();
+  if (isa<StoreInst>(I))
+    return StoreInst::getPointerOperandIndex();
+  const auto *II = dyn_cast<IntrinsicInst>(I);
+  if (!II)
+    return std::nullopt;
+  switch (II->getIntrinsicID()) {
+  case Intrinsic::masked_load:
+  case Intrinsic::masked_gather:
+    return 0;
+  case Intrinsic::masked_store:
+  case Intrinsic::masked_scatter:
+    return 1;
+  default:
+    return std::nullopt;
+  }
+}
+
+/// Returns a common cache hint across \p VL that can be applied to \p Inst, or
+/// nullptr if there is no common hint.
+static MDNode *getCommonCacheHint(const Instruction *Inst,
+                                  ArrayRef<Value *> VL) {
+  std::optional<unsigned> PointerIndex = getPointerOperandIndex(Inst);
+  if (!PointerIndex)
+    return nullptr;
+
+  const auto *First = cast<Instruction>(VL.front());
+  MDNode *MD = First->getMetadata(LLVMContext::MD_mem_cache_hint);
+  if (!MD)
+    return nullptr;
+
+  for (Value *V : VL) {
+    const auto *Source = cast<Instruction>(V);
+    if (getPointerOperandIndex(Source) != PointerIndex ||
+        Source->getMetadata(LLVMContext::MD_mem_cache_hint) != MD)
+      return nullptr;
+  }
+  return MD;
+}
+
 /// \returns \p I after propagating metadata from \p VL.
 Instruction *llvm::propagateMetadata(Instruction *Inst, ArrayRef<Value *> VL) {
   if (VL.empty())
     return Inst;
+
+  // Keep cache hints out of getMetadataToPropagate(): VPlan changes operand
+  // layouts without remapping cache-hint indices.
+  Inst->setMetadata(LLVMContext::MD_mem_cache_hint,
+                    getCommonCacheHint(Inst, VL));
+
   SmallVector<std::pair<unsigned, MDNode *>> Metadata;
   getMetadataToPropagate(cast<Instruction>(VL[0]), Metadata);
 
